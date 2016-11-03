@@ -1,0 +1,35 @@
+```
+Global
+
+:help keyword - open help for keyword
+:open_mouth: file - open file
+:saveas file - save file as
+:close - close current pane
+カーソル移動
+
+h - 左に移動
+j - 下に移動
+k - 上に移動
+l - 右に移動
+w - 単語の先頭へジャンプ（区切り文字まで）
+W - 単語の先頭へジャンプ（区切り文字を含めない）
+e - 単語の最後にジャンプ（区切り文字まで）
+E - 単語の最後にジャンプ（区切り文字を含めない）
+b - 単語の先頭へ戻る（区切り文字まで）
+B - 単語の先頭へ戻る（区切り文字を含めない）
+0 - (ゼロ)先頭に移動
+^ - 行の最初の文字へ移動
+$ - 行の終わりへ移動
+g_ - jump to the last non-blank character of the line
+gg - go to the first line of the document
+G - 最終行へ移動（番号を付けるとその行へ移動- 5Gは 5行目へ）
+5G - 5行目に移動
+fx - jump to next occurrence of character x
+tx - jump to before next occurrence of character x
+} - jump to next paragraph (or function/block, when editing code)
+{ - jump to previous paragraph (or function/block, when editing code)
+Ctrl + b - move back one full screen
+Ctrl + f - move forward one full screen
+Ctrl + d - move forward 1/2 a screen
+Ctrl + u - move back 1/2 a screen
+```
