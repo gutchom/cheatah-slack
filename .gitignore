@@ -1,11 +1,4 @@
 npm-debug.log*
 node_modules/
-simple_storage/
-data/*
-data/cheatah/*
-
-!data/cheatah/
-!data/cheatah/EmojiPrefix
-!data/cheatah/RegExepJS
-!data/cheatah/ShortHandsEn
-!data/cheatah/VimCheatSheet
+cheatah_db/
+data/

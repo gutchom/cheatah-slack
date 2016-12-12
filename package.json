@@ -4,9 +4,10 @@
   "description": "cheatah shows cheat sheets",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --watch lib --watch index.js",
-    "jp": "LOCALE=ja nodemon --watch lib --watch index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "PORT=3000 nodemon index.js",
+    "dev": "PORT=3000 nodemon --watch app --watch index.js",
+    "migration": "sequelize db:migrate --config ./app/config/config.js --migrations-path ./app/migrations",
+    "test": "mocha test/**/*.test.js"
   },
   "repository": {
     "type": "git",
@@ -22,10 +23,16 @@
   },
   "homepage": "https://github.com/gutchom/cheatah-slack",
   "dependencies": {
-    "botkit": "^0.4.0"
+    "aws-sdk": "^2.7.13",
+    "botkit": "^0.4.3",
+    "mysql": "^2.12.0",
+    "sequelize": "^3.27.0"
   },
   "devDependencies": {
-    "localtunnel": "^1.8.1",
-    "nodemon": "^1.11.0"
+    "mocha": "^3.2.0",
+    "nodemon": "^1.11.0",
+    "power-assert": "^1.4.2",
+    "sequelize-cli": "^2.4.0",
+    "sinon": "^1.17.6"
   }
 }

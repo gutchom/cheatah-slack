@@ -1,0 +1,41 @@
+version: '2'
+services:
+  db:
+    restart: always
+    image: mysql:5.6
+    environment:
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: cheatah_slack
+    ports:
+      - '3306:3306'
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+  app:
+    build: .
+    command: npm run dev
+    depends_on:
+      - db
+    links:
+      - db
+    networks:
+      - default
+    ports:
+      - '3000:3000'
+    volumes:
+      - .:/home/app/cheatah-slack
+    environment:
+      DB_PORT: db
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: cheatah_slack
+      SLACK_CLIENT: ${CHEATAH_SLACK_CLIENT}
+      SLACK_CLIENT_SECRET: ${CHEATAH_SLACK_CLIENT_SECRET}
+      AWS_ACCESS_KEY_ID: ${CHEATAH_AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${CHEATAH_AWS_SECRET_ACCESS_KEY}
+
+networks:
+  default:
+    driver: bridge
