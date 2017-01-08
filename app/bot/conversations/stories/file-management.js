@@ -1,12 +1,11 @@
 const EVENT_TYPE_MENTIONS = require('../../settings').constants.EVENT_TYPE_MENTIONS
-const sentence = require('../../settings/dictionary').sentence
-const commands = require('../../settings/dictionary').command
+const sentences = require('../../settings/dictionary').sentences
+const commands = require('../../settings/dictionary').commands
 const inquiries = require('../inquiries')
-const getValue = require ('../../store').getValue
+const userConfigs = require ('../../settings/userConfigs')
 const model = require('../../../models')
 const File = model.File
 
-// TODO: private file come with the button function
 // conversation stories about note list management
 module.exports = function fileManagement(controller) {
   // The case an user wants to add or overwrite note
@@ -16,12 +15,12 @@ module.exports = function fileManagement(controller) {
     const team = message.team
     const channel = message.channel
     const user = message.user
-    const locale = getValue('locale', user)
+    const locale = userConfigs.getValue('locale', user)
 
     File.getAvailableList({ team, channel })
       .then(files => {
         if (files.find(file => file.name === title)) {
-          return inquiries.askConfirm(bot, message, `*${title}* ${sentence.alreadyExists[locale]}`)
+          return inquiries.askConfirm(bot, message, `*${title}* ${sentences.alreadyExists[locale]}`)
             .then(answer => {
               if (answer) {
                 return title
@@ -30,13 +29,13 @@ module.exports = function fileManagement(controller) {
               }
             })
         } else {
-          return title || inquiries.askText(bot, message, sentence.askTitle[locale])
+          return title || inquiries.askText(bot, message, sentences.askTitle[locale])
         }
       })
-      .then(name => inquiries.askText(bot, message, sentence.postContent[locale])
+      .then(name => inquiries.askText(bot, message, sentences.postContent[locale])
         .then(content => ({ name, content }))
       )
-      .then(({ name, content }) => inquiries.askConfirm(bot, message, sentence.isPrivate[locale])
+      .then(({ name, content }) => inquiries.askConfirm(bot, message, sentences.isPrivate[locale])
         .then(isPrivate => ({ name, content, isPrivate: !isPrivate }))
       )
       .then(({ name, content, isPrivate }) => File.removeText({ name, team, channel, isPrivate })
@@ -45,10 +44,10 @@ module.exports = function fileManagement(controller) {
       .then(({ name, content, isPrivate }) => File.saveText({ name, content, team, channel, user, isPrivate })
         .then(() => name)
       )
-      .then(name => bot.reply(message, `*${name}* ${sentence.saved[locale]}${sentence.finish[locale]}`))
+      .then(name => bot.reply(message, `*${name}* ${sentences.saved[locale]}${sentences.finish[locale]}`))
       .catch(err => err.message === 'quit'
-        ? bot.reply(message, sentence.roger[locale] + sentence.finish[locale])
-        : bot.reply(message, sentence.error[locale] + sentence.abort[locale])
+        ? bot.reply(message, sentences.roger[locale] + sentences.finish[locale])
+        : bot.reply(message, sentences.error[locale] + sentences.abort[locale])
       )
   })
 
@@ -59,7 +58,7 @@ module.exports = function fileManagement(controller) {
     const team = message.team
     const channel = message.channel
     const user = message.user
-    const locale = getValue('locale', user)
+    const locale = userConfigs.getValue('locale', user)
 
     File.getAvailableList({ team, channel })
       .then(files => {
@@ -76,7 +75,7 @@ module.exports = function fileManagement(controller) {
       })
       .then(({ name, isPrivate }) => File.getText({ name, team, channel, isPrivate }))
       .then(({ name, content }) => bot.reply(message, `*${name}*\n\n${content}`))
-      .catch(() => bot.reply(message, sentence.error[locale] + sentence.abort[locale]))
+      .catch(() => bot.reply(message, sentences.error[locale] + sentences.abort[locale]))
   })
 
   // The case an user wants to remove file
@@ -86,7 +85,7 @@ module.exports = function fileManagement(controller) {
     const team = message.team
     const channel = message.channel
     const user = message.user
-    const locale = getValue('locale', user)
+    const locale = userConfigs.getValue('locale', user)
 
     File.getAvailableList({ team, channel })
       .then(files => {
@@ -101,7 +100,7 @@ module.exports = function fileManagement(controller) {
             .then(chosen => files[chosen])
         }
       })
-      .then(({ name, isPrivate }) => inquiries.askConfirm(bot, message, `*${name}* ${sentence.removing[locale]}`)
+      .then(({ name, isPrivate }) => inquiries.askConfirm(bot, message, `*${name}* ${sentences.removing[locale]}`)
         .then(answer => {
           if (answer) {
             return { name, isPrivate }
@@ -111,10 +110,10 @@ module.exports = function fileManagement(controller) {
         })
       )
       .then(({ name, isPrivate }) => File.removeText({ name, team, channel, isPrivate }))
-      .then(name => bot.reply(message, `*${name}* ${sentence.removed[locale]}`))
+      .then(name => bot.reply(message, `*${name}* ${sentences.removed[locale]}`))
       .catch(err => err.message === 'quit'
-        ? bot.reply(message, sentence.roger[locale] + sentence.finish[locale])
-        : bot.reply(message, sentence.error[locale] + sentence.abort[locale])
+        ? bot.reply(message, sentences.roger[locale] + sentences.finish[locale])
+        : bot.reply(message, sentences.error[locale] + sentences.abort[locale])
       )
   })
 
@@ -123,7 +122,7 @@ module.exports = function fileManagement(controller) {
     const team = message.team
     const channel = message.channel
     const user = message.user
-    const locale = getValue('locale', user)
+    const locale = userConfigs.getValue('locale', user)
 
     File.getAvailableList({team, channel})
       .then(files => files.map((file, order) => `${order + 1}. ${file.name}`).join('\n'))

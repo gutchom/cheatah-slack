@@ -1,10 +1,8 @@
-const word = require('./dictionary').word
+const words = require('./dictionary').words
 
 function generateMatchPattern(locales, morePatterns) {
   let spells = []
-  Object.keys(locales).forEach(localize => {
-    spells.push(locales[localize])
-  })
+  Object.keys(locales).forEach(localize => spells.push(locales[localize]))
   if (Array.isArray(morePatterns)) spells = spells.concat(morePatterns)
   return new RegExp(spells.join('|'), 'i')
 }
@@ -12,18 +10,18 @@ function generateMatchPattern(locales, morePatterns) {
 const locales = [
   {
     code: 'en',
-    dict: word.english,
-    pattern: generateMatchPattern(word.english),
+    dict: words.english,
+    pattern: generateMatchPattern(words.english),
   },
   {
     code: 'ja',
-    dict: word.japanese,
-    pattern: generateMatchPattern(word.japanese),
+    dict: words.japanese,
+    pattern: generateMatchPattern(words.japanese),
   },
   {
     code: 'kansai',
-    dict: word.kansaiBen,
-    pattern: generateMatchPattern(word.kansaiBen),
+    dict: words.kansaiBen,
+    pattern: generateMatchPattern(words.kansaiBen),
   },
 ]
 

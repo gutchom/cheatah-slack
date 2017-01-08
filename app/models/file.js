@@ -1,4 +1,3 @@
-'use strict';
 const options = require('../config/options')
 const handleS3 = require('../bot/utilities/handle-s3')
 
@@ -84,11 +83,6 @@ module.exports = function(sequelize, DataTypes) {
           })
       }
     }
-  }, options),
-  {
-    validate: {
-
-    }
-  });
-  return File;
-};
+  }, options))
+  return File
+}

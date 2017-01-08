@@ -1,4 +1,4 @@
-const word = {
+const words = {
   english: {
     en: 'English',
     ja: '英語',
@@ -16,7 +16,7 @@ const word = {
   },
 }
 
-const command = {
+const commands = {
   show: ['(?:show|open|bring).?(.*)', '(.*).?を?表示?(して)', '(.*).?を?見(せ|し)て', '(.*).?を?出して'],
   add: ['(?:add|create|save|register|upload|write).?(.*)', '(.*).?(置い|入れ|直し|((追加|保存|書き?込み?|アップロード|セーブ)し))といて'],
   remove: ['(?:remove|delete|trash|rm).?(.*)', '(.*).?削除して', '(.*).?消して', '(.*).?ポア'],
@@ -25,13 +25,13 @@ const command = {
   help: ['(help|hint|助けて|(分|わ)からない|教えて)']
 }
 
-const phrase = {
+const phrases = {
   yes: /(yes|yup|yeah|agree|ええで|かまへん)/i,
   no: /(no|nope|いいえ|あかん|ちゃうねん)/i,
   abort: /(bye|stop|cancel)/i,
 }
 
-const sentence = {
+const sentences = {
   fileList: {
     en: 'Here is cheat sheets list.\n',
     ja: 'チートシート一覧だ。\n',
@@ -134,4 +134,9 @@ const sentence = {
   },
 }
 
-module.exports = { word, command, phrase, sentence }
+module.exports = {
+  words,
+  commands,
+  phrases,
+  sentences
+}

@@ -1,4 +1,3 @@
-'use strict';
 const options = require('../config/options')
 
 module.exports = function(sequelize, DataTypes) {
@@ -13,6 +12,6 @@ module.exports = function(sequelize, DataTypes) {
         })
       }
     }
-  }, options));
-  return User;
-};
+  }, options))
+  return User
+}
