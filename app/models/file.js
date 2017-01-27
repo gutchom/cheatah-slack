@@ -31,13 +31,13 @@ module.exports = function(sequelize, DataTypes) {
           targetKey: 'id',
         })
       },
-      getAvailableList: function({ team, channel }) {
+      getAvailableList: function({ teamId, channelId }) {
         return this.findAll({
           where: {
-            belongs_team: team,
+            belongs_team: teamId,
             $and: {
               $or: [
-                { created_channel: channel },
+                { created_channel: channelId },
                 { is_private: false }
               ]
             }
@@ -49,32 +49,32 @@ module.exports = function(sequelize, DataTypes) {
         })))
           .catch(err => err)
       },
-      getText: function({ name, team, channel, isPrivate }) {
-        const scope = isPrivate ? channel : team
-        const path = handleS3.pathBuilder(name, team, scope)
+      getText: function({ name, teamId, channelId, isPrivate }) {
+        const scope = isPrivate ? channelId : teamId
+        const path = handleS3.pathBuilder(name, teamId, scope)
 
         return handleS3.downloadTextFile(path)
           .then(data => ({ name, content: data.Body.toString() }))
       },
-      saveText: function({ name, content, team, channel, user, isPrivate }) {
-        const scope = isPrivate ? channel : team
-        const path = handleS3.pathBuilder(name, team, scope)
+      saveText: function({ name, content, teamId, channelId, userId, isPrivate }) {
+        const scope = isPrivate ? channelId : teamId
+        const path = handleS3.pathBuilder(name, teamId, scope)
         const record = {
           name: name,
           mime_type: 'text/plain',
           s3_path: path,
           is_private: isPrivate,
-          belongs_team: team,
-          created_channel: channel,
-          owner: user,
+          belongs_team: teamId,
+          created_channel: channelId,
+          owner: userId,
         }
 
         return handleS3.uploadTextFile(path, content)
           .then(() => this.create(record))
       },
-      removeText: function({ name, team, channel, isPrivate }) {
-        const scope = isPrivate ? channel : team
-        const path = handleS3.pathBuilder(name, team, scope)
+      removeText: function({ name, teamId, channelId, isPrivate }) {
+        const scope = isPrivate ? channelId : teamId
+        const path = handleS3.pathBuilder(name, teamId, scope)
 
         return handleS3.deleteFile(path)
           .then(() => {
