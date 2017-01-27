@@ -23,16 +23,16 @@
   },
   "homepage": "https://github.com/gutchom/cheatah-slack",
   "dependencies": {
-    "aws-sdk": "^2.7.13",
-    "botkit": "^0.4.3",
-    "mysql": "^2.12.0",
-    "sequelize": "^3.27.0"
+    "aws-sdk": "^2.9.0",
+    "botkit": "^0.4.9",
+    "mysql": "^2.13.0",
+    "sequelize": "^3.30.0"
   },
   "devDependencies": {
     "mocha": "^3.2.0",
     "nodemon": "^1.11.0",
     "power-assert": "^1.4.2",
-    "sequelize-cli": "^2.4.0",
-    "sinon": "^1.17.6"
+    "sequelize-cli": "^2.5.1",
+    "sinon": "^1.17.7"
   }
 }
