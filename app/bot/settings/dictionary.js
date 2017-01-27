@@ -17,18 +17,41 @@ const words = {
 }
 
 const commands = {
-  show: ['(?:show|open|bring).?(.*)', '(.*).?を?表示?(して)', '(.*).?を?見(せ|し)て', '(.*).?を?出して'],
-  add: ['(?:add|create|save|register|upload|write).?(.*)', '(.*).?(置い|入れ|直し|((追加|保存|書き?込み?|アップロード|セーブ)し))といて'],
-  remove: ['(?:remove|delete|trash|rm).?(.*)', '(.*).?削除して', '(.*).?消して', '(.*).?ポア'],
-  list: ['list', 'ls', '一覧', 'all'],
-  locale: ['speak in (.*)', '(.*)で?(喋っ|話し)て'],
-  help: ['(help|hint|助けて|(分|わ)からない|教えて)']
+  show: [
+    '(?:show|open|bring).?(.*)',
+    '(.*).?を?表示?(して)',
+    '(.*).?を?見(せ|し)て',
+    '(.*).?を?出して',
+  ],
+  add: [
+    '(?:add|create|save|register|upload|write).?(.*)',
+    '(.*).?を?(置い|入れ|直し|((追加|保存|書き?込み?|アップロード|セーブ)し))((てお|と)い)?て',
+  ],
+  remove: [
+    '(?:remove|delete|trash|rm).?(.*)',
+    '(.*).?を?削除?して',
+    '(.*).?(を|は)?ポア',
+  ],
+  list: [
+    'list',
+    'ls',
+    '一覧',
+    'all',
+  ],
+  locale: [
+    'speak in (.*)',
+    '(.*)で?(喋っ|話し)て',
+  ],
+  help: [
+    '(help|hint|助けて|(分|わ)からない|教えて)',
+  ]
+
 }
 
 const phrases = {
-  yes: /(yes|yup|yeah|agree|ええで|かまへん)/i,
-  no: /(no|nope|いいえ|あかん|ちゃうねん)/i,
-  abort: /(bye|stop|cancel)/i,
+  yes: /(y|yes|yup|yeah|agree|はい|いいよ|ええで|かまへん)/i,
+  no: /(n|no|nope|いいえ|あかん|ちゃう(ねん)?)/i,
+  abort: /(!abort|!bye|!stop|!cancel)/i,
 }
 
 const sentences = {
