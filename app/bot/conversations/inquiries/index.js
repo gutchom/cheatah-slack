@@ -2,22 +2,26 @@ const userConfigs = require('../../settings/userConfigs')
 const sentences = require('../../settings/dictionary').sentences
 const phrases = require('../../settings/dictionary').phrases
 
-function abortConvo(res, convo, locale) {
-  convo.say(sentences.timeUp[locale])
-  convo.say(sentences.abort[locale])
-  convo.stop()
-}
-
 function askText(bot, message, question) {
   const locale = userConfigs.getValue('locale', message.user)
-
   return new Promise((resolve, reject) => {
     bot.startConversation(message, (err, convo) => {
       if (err) reject(err)
-      convo.ask(question, (res, convo) => {
-        convo.next()
-        resolve(res.text)
-      })
+      convo.ask(question, [
+        {
+          pattern: phrases.abort,
+          callback: () => {
+            reject('quit')
+          }
+        },
+        {
+          default: true,
+          callback: (res, convo) => {
+            convo.next()
+            resolve(res.text)
+          }
+        }
+      ])
     })
   })
 }
@@ -25,17 +29,15 @@ function askText(bot, message, question) {
 // Return boolean by asking y/n alternative
 function askConfirm(bot, message, caution) {
   const locale = userConfigs.getValue('locale', message.user)
-
   return new Promise((resolve, reject) => {
     bot.startConversation(message, (err, convo) => {
       if (err) reject(err)
       convo.say(caution)
-
       convo.ask(sentences.confirm[locale], [
         {
           pattern: phrases.abort,
-          callback: (res, convo) => {
-            abortConvo(res, convo, locale)
+          callback: () => {
+            reject('quit')
           }
         },
         {
@@ -69,17 +71,15 @@ function askConfirm(bot, message, caution) {
 // return: index number of Array
 function askFromOrderedList(bot, message, list) {
   const locale = userConfigs.getValue('locale', message.user)
-
   return new Promise(resolve => {
     bot.startConversation(message, (err, convo) => {
       if (err) reject(err)
       const orderedList = list.map((option, order) => `${order + 1}. ${option}`).join('\n')
-
       convo.ask(sentences.chooseFromList[locale] + orderedList, [
         {
           pattern: phrases.abort,
-          callback: (res, convo) => {
-            abortConvo(res, convo, locale)
+          callback: () => {
+            reject('quit')
           }
         },
         {
