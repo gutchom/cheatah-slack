@@ -16,6 +16,11 @@ function downloadTextFile(path) {
   })
 }
 
+function getTextContent(path) {
+  return downloadTextFile(path)
+    .then(data => data.Body.toString())
+}
+
 function uploadTextFile(path, content) {
   const params = {
     Bucket,
@@ -39,6 +44,7 @@ function deleteFile(path) {
 module.exports = {
   pathBuilder,
   downloadTextFile,
+  getTextContent,
   uploadTextFile,
   deleteFile,
 }

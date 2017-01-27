@@ -53,8 +53,8 @@ module.exports = function(sequelize, DataTypes) {
         const scope = isPrivate ? channelId : teamId
         const path = handleS3.pathBuilder(name, teamId, scope)
 
-        return handleS3.downloadTextFile(path)
-          .then(data => ({ name, content: data.Body.toString() }))
+        return handleS3.getTextContent(path)
+          .then(content => ({ name, content }))
       },
       saveText: function({ name, content, teamId, channelId, userId, isPrivate }) {
         const scope = isPrivate ? channelId : teamId
