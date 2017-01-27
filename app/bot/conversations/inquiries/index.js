@@ -2,12 +2,10 @@ const userConfigs = require('../../settings/userConfigs')
 const sentences = require('../../settings/dictionary').sentences
 const phrases = require('../../settings/dictionary').phrases
 
-function abortConvo(convo, locale, res) {
-  if (phrases.abort.test(res.text)) {
-    convo.say(sentences.timeUp[locale])
-    convo.say(sentences.abort[locale])
-    convo.stop()
-  }
+function abortConvo(res, convo, locale) {
+  convo.say(sentences.timeUp[locale])
+  convo.say(sentences.abort[locale])
+  convo.stop()
 }
 
 function askText(bot, message, question) {
@@ -16,10 +14,8 @@ function askText(bot, message, question) {
   return new Promise((resolve, reject) => {
     bot.startConversation(message, (err, convo) => {
       if (err) reject(err)
-
       convo.ask(question, (res, convo) => {
-        abortConvo(convo, locale, res)
-        convo.stop()
+        convo.next()
         resolve(res.text)
       })
     })
@@ -32,23 +28,39 @@ function askConfirm(bot, message, caution) {
 
   return new Promise((resolve, reject) => {
     bot.startConversation(message, (err, convo) => {
+      if (err) reject(err)
       convo.say(caution)
 
-      convo.ask(sentences.confirm[locale], (res, convo) => {
-        abortConvo(convo, locale, res)
-
-        if (phrases.yes.test(res.text)) {
-          convo.stop()
-          resolve(true)
+      convo.ask(sentences.confirm[locale], [
+        {
+          pattern: phrases.abort,
+          callback: (res, convo) => {
+            abortConvo(res, convo, locale)
+          }
+        },
+        {
+          pattern: phrases.yes,
+          callback: (res, convo) => {
+            convo.next()
+            resolve(true)
+          }
+        },
+        {
+          pattern: phrases.no,
+          callback: (res, convo) => {
+            convo.next()
+            resolve(false)
+          }
+        },
+        {
+          default: true,
+          callback: (res, convo) => {
+            convo.say(sentences.tryAgain[locale])
+            convo.repeat()
+            convo.next()
+          }
         }
-        if (phrases.no.test(res.text)) {
-          convo.stop()
-          resolve(false)
-        }
-
-        convo.say(sentences.tryAgain[locale])
-        convo.repeat()
-      })
+      ])
     })
   })
 }
@@ -60,20 +72,33 @@ function askFromOrderedList(bot, message, list) {
 
   return new Promise(resolve => {
     bot.startConversation(message, (err, convo) => {
+      if (err) reject(err)
       const orderedList = list.map((option, order) => `${order + 1}. ${option}`).join('\n')
 
-      convo.ask(sentences.chooseFromList[locale] + orderedList, (res, convo) => {
-        const choice = parseInt(res.text, 10) - 1
-        abortConvo(convo, locale, res)
-
-        if (list[choice]) {
-          convo.stop()
-          resolve(choice)
+      convo.ask(sentences.chooseFromList[locale] + orderedList, [
+        {
+          pattern: phrases.abort,
+          callback: (res, convo) => {
+            abortConvo(res, convo, locale)
+          }
+        },
+        {
+          pattern: new RegExp(`[1-${list.length}]`, 'i'),
+          callback: (res, convo) => {
+            const choice = parseInt(res.text, 10) - 1
+            convo.next()
+            resolve(choice)
+          }
+        },
+        {
+          default: true,
+          callback: (res, convo) => {
+            convo.say(sentences.tryAgain[locale])
+            convo.repeat()
+            convo.next()
+          }
         }
-
-        convo.say(sentences.tryAgain[locale])
-        convo.repeat()
-      })
+      ])
     })
   })
 }
