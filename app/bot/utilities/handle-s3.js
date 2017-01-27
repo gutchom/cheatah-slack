@@ -3,8 +3,6 @@ const rootDirectory = 'cheatah-slack'
 const Bucket = 'suw-arakawa'
 const ACL = 'private'
 
-AWS.config.update({ region: 'ap-northeast-1' })
-
 const s3 = new AWS.S3()
 
 function pathBuilder(name, team, scope) {
