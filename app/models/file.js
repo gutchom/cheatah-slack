@@ -31,7 +31,7 @@ module.exports = function(sequelize, DataTypes) {
           targetKey: 'id',
         })
       },
-      getAvailableList: function({ teamId, channelId }) {
+      getAvailableList: function(teamId, channelId) {
         return this.findAll({
           where: {
             belongs_team: teamId,
@@ -42,53 +42,19 @@ module.exports = function(sequelize, DataTypes) {
               ]
             }
           }
-        }).then(files => files.map(file => ({
-          id: file.get('id'),
-          name: file.get('name'),
-          isPrivate: file.get('is_private'),
-        })))
-          .catch(err => err)
+        })
+      }
+    },
+    instanceMethods: {
+      buildS3Path: function() {
+        return handleS3.pathBuilder(this.name, this.belongs_team, this.is_private ? this.created_channel : this.belongs_team)
       },
-      getText: function({ name, teamId, channelId, isPrivate }) {
-        const scope = isPrivate ? channelId : teamId
-        const path = handleS3.pathBuilder(name, teamId, scope)
-
-        return handleS3.getTextContent(path)
-          .then(content => ({ name, content }))
-      },
-      saveText: function({ name, content, teamId, channelId, userId, isPrivate }) {
-        const scope = isPrivate ? channelId : teamId
-        const path = handleS3.pathBuilder(name, teamId, scope)
-        const record = {
-          name: name,
-          mime_type: 'text/plain',
-          s3_path: path,
-          is_private: isPrivate,
-          belongs_team: teamId,
-          created_channel: channelId,
-          owner: userId,
-        }
-
-        return handleS3.uploadTextFile(path, content)
-          .then(() => this.findOne({ where: { s3_path: path } }))
-          .then(fileData => {
-            console.log(fileData)
-            if (fileData) {
-              return fileData.update(record)
-            } else {
-              return this.create(record)
-            }
+      overwrite: function() {
+        return File.findOne({ where: { s3_path: this.s3_path } })
+          .then(olderFile => {
+            if (olderFile) olderFile.destroy()
           })
-      },
-      removeText: function({ name, teamId, channelId, isPrivate }) {
-        const scope = isPrivate ? channelId : teamId
-        const path = handleS3.pathBuilder(name, teamId, scope)
-
-        return handleS3.deleteFile(path)
-          .then(() => {
-            this.destroy({ where: { s3_path: path } })
-            return name
-          })
+          .then(() => this.save())
       }
     }
   }, options))

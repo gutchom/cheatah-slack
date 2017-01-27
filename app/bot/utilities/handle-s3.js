@@ -5,8 +5,8 @@ const ACL = 'private'
 
 const s3 = new AWS.S3()
 
-function pathBuilder(name, team, scope) {
-  const path = [rootDirectory, team, scope, encodeURIComponent(name)]
+function pathBuilder(name, teamId, scope) {
+  const path = [rootDirectory, teamId, scope, encodeURIComponent(name)]
   return path.filter(element => element && element.length > 0).join('/')
 }
 
@@ -14,11 +14,6 @@ function downloadTextFile(path) {
   return new Promise((resolve, reject) => {
     s3.getObject({ Bucket, Key: path }, (err, data) => err ? reject(err) : resolve(data))
   })
-}
-
-function getTextContent(path) {
-  return downloadTextFile(path)
-    .then(data => data.Body.toString())
 }
 
 function uploadTextFile(path, content) {
@@ -44,7 +39,6 @@ function deleteFile(path) {
 module.exports = {
   pathBuilder,
   downloadTextFile,
-  getTextContent,
   uploadTextFile,
   deleteFile,
 }
