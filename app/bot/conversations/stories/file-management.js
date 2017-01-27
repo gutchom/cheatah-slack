@@ -5,6 +5,7 @@ const inquiries = require('../inquiries')
 const userConfigs = require ('../../settings/userConfigs')
 const model = require('../../../models')
 const File = model.File
+const Channel = model.Channel
 
 // conversation stories about note list management
 module.exports = function fileManagement(controller) {
@@ -34,12 +35,18 @@ module.exports = function fileManagement(controller) {
       .then(name => inquiries.askText(bot, message, sentences.postContent[locale])
         .then(content => ({ name, content }))
       )
-      .then(({ name, content }) => inquiries.askConfirm(bot, message, sentences.isPrivate[locale])
-        .then(isPrivate => ({ name, content, isPrivate: !isPrivate }))
-      )
-      .then(({ name, content, isPrivate }) => File.removeText({ name, team, channel, isPrivate })
-        .then(() => ({ name, content, isPrivate }))
-      )
+      .then(({ name, content }) => {
+        return new Promise(resolve => {
+          bot.api.channels.list({}, (err, res) => {
+            if (err) throw new Error('abort')
+            const channelIdList = res.channels.map(channel => channel.id)
+            Channel.updateChannelList(channelIdList, teamId)
+
+            const isPrivate = !(res.channels.find(channel => channel.id === channelId))
+            resolve({ name, content, isPrivate })
+          })
+        })
+      })
       .then(({ name, content, isPrivate }) => File.saveText({ name, content, teamId, channelId, userId, isPrivate })
         .then(() => name)
       )

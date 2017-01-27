@@ -70,7 +70,15 @@ module.exports = function(sequelize, DataTypes) {
         }
 
         return handleS3.uploadTextFile(path, content)
-          .then(() => this.create(record))
+          .then(() => this.findOne({ where: { s3_path: path } }))
+          .then(fileData => {
+            console.log(fileData)
+            if (fileData) {
+              return fileData.update(record)
+            } else {
+              return this.create(record)
+            }
+          })
       },
       removeText: function({ name, teamId, channelId, isPrivate }) {
         const scope = isPrivate ? channelId : teamId

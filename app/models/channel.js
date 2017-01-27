@@ -14,6 +14,14 @@ module.exports = function(sequelize, DataTypes) {
           foreignKey: 'belongs_team',
           targetKey: 'id',
         })
+      },
+      updateChannelList: function(channelIdList, teamId) {
+        channelIdList.forEach(channelId => {
+          this.findOrCreate({
+            where: { id: channelId },
+            defaults: { belongs_team: teamId }
+          })
+        })
       }
     }
   }, options))
