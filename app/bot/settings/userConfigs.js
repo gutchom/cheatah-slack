@@ -9,7 +9,7 @@ function getValue(key, id) {
 }
 
 function setValue(key, id, value) {
-  if (!userConfigs.hasOwnProperty(key)) throw new RangeError("'key' argument should be existing property of 'store Object.")
+  if (!userConfigs.hasOwnProperty(key)) throw new RangeError("'key' argument should be existing property of 'store' object.")
   userConfigs[key][id] = value
 }
 

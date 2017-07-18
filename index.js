@@ -1,5 +1,5 @@
 const Botkit = require('botkit')
-const port = process.env.PORT
+const port = process.env.PORT || 3456
 const environment = process.env.NODE_ENV
 const clientId = process.env.SLACK_CLIENT
 const clientSecret = process.env.SLACK_CLIENT_SECRET

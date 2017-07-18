@@ -25,6 +25,7 @@ function choseFile(bot, message, files, title) {
 
 // conversation stories about note list management
 module.exports = function fileManagement(controller) {
+
   // The case an user wants to add or overwrite note
   controller.hears(commands.add, EVENT_TYPE_MENTIONS, (bot, message) => {
     const title = message.match[1]
@@ -65,6 +66,7 @@ module.exports = function fileManagement(controller) {
       .then(file => Channel.findOrCreate({ where: { id: channelId }, defaults: { belongs_team: teamId } })
         .then(() => file)
       )
+      // Set scope (private/public) according to channel condition
       .then(file => {
         return new Promise((resolve, reject) => {
           bot.api.channels.list({}, (err, res) => {

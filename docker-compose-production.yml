@@ -1,7 +1,6 @@
 version: '2'
 services:
   db:
-    restart: always
     image: mysql:5.6
     environment:
       MYSQL_USER: ${MYSQL_USER}
@@ -10,33 +9,21 @@ services:
       MYSQL_DATABASE: cheatah_slack
     ports:
       - '3306:3306'
-    volumes:
-      - ./data/mysql:/var/lib/mysql
   app:
-    build: .
-    command: npm run dev
-    depends_on:
-      - db
+    image: 787647415306.dkr.ecr.ap-northeast-1.amazonaws.com/cheatah/cheatah-slack:latest
+    command: npm start
     links:
       - db
-    networks:
-      - default
     ports:
-      - '80:3000'
-    volumes:
-      - .:/home/app/cheatah-slack
+      - '80:80'
     environment:
       DB_PORT: db
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: cheatah_slack
-      SLACK_CLIENT: ${CHEATAH_SLACK_CLIENT}
-      SLACK_CLIENT_SECRET: ${CHEATAH_SLACK_CLIENT_SECRET}
+      SLACK_CLIENT: ${SLACK_CLIENT}
+      SLACK_CLIENT_SECRET: ${SLACK_CLIENT_SECRET}
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
-      AWS_REGION: ${CHEATAH_AWS_REGION}
-
-networks:
-  default:
-    driver: bridge
+      AWS_REGION: ${AWS_REGION}

@@ -20,8 +20,8 @@ const commands = {
   show: [
     '(?:show|open|bring).?(.*)',
     '(.*).?を?表示?(して)',
-    '(.*).?を?見(せ|し)て',
-    '(.*).?を?出して',
+    '(.*).?を?(見|み)(せ|し)て',
+    '(.*).?を?(出|だ)して',
   ],
   add: [
     '(?:add|create|save|register|upload|write).?(.*)',
@@ -29,7 +29,7 @@ const commands = {
   ],
   remove: [
     '(?:remove|delete|trash|rm).?(.*)',
-    '(.*).?を?削除?して',
+    '(.*).?を?(削除)?して',
     '(.*).?(を|は)?ポア',
   ],
   list: [
@@ -45,7 +45,6 @@ const commands = {
   help: [
     '(help|hint|助けて|(分|わ)からない|教えて)',
   ]
-
 }
 
 const phrases = {
