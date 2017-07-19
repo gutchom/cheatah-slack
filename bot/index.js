@@ -1,7 +1,7 @@
-const appConfig = require('./conversations/stories/app-config')
-const fileManagement = require('./conversations/stories/file-management')
-const userConfigs = require('./settings/userConfigs')
-const User = require('../models').User
+const appConfig = require('./dialogs/stories/app-config')
+const fileManagement = require('./dialogs/stories/file-management')
+const userConfigs = require('./personalize/userConfigs')
+const User = require('../db/models/index').User
 
 function init(controller) {
   // Import data from DB

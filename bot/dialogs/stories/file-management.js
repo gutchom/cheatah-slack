@@ -1,10 +1,10 @@
-const EVENT_TYPE_MENTIONS = require('../../settings').constants.EVENT_TYPE_MENTIONS
-const sentences = require('../../settings/dictionary').sentences
-const commands = require('../../settings/dictionary').commands
-const inquiries = require('../inquiries')
+const EVENT_TYPE_MENTIONS = require('../../personalize/index').constants.EVENT_TYPE_MENTIONS
+const sentences = require('../../personalize/dictionary').sentences
+const commands = require('../../personalize/dictionary').commands
+const inquiries = require('../inquiries/index')
 const handleS3 = require('../../utilities/handle-s3')
-const userConfigs = require ('../../settings/userConfigs')
-const model = require('../../../models')
+const userConfigs = require ('../../personalize/userConfigs')
+const model = require('../../../db/models/index')
 const File = model.File
 const Channel = model.Channel
 

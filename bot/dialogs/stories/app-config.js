@@ -3,9 +3,9 @@ const sentences = require('../../settings/dictionary').sentences
 const commands = require('../../settings/dictionary').commands
 const localesSet = require('../../settings').conditions.locales
 const EVENT_TYPE_MENTIONS = require('../../settings').constants.EVENT_TYPE_MENTIONS
-const inquiries = require('../inquiries')
+const inquiries = require('../inquiries/index')
 const handleS3 = require('../../utilities/handle-s3')
-const User = require('../../../models').User
+const User = require('../../../../app/db/models/index').User
 
 module.exports = function appConfiguration(controller) {
   controller.hears('help', EVENT_TYPE_MENTIONS, (bot, message) => {

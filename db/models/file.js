@@ -1,5 +1,5 @@
 const options = require('../config/options')
-const handleS3 = require('../bot/utilities/handle-s3')
+const handleS3 = require('../../bot/utilities/handle-s3')
 
 module.exports = function(sequelize, DataTypes) {
   var File = sequelize.define('File', {

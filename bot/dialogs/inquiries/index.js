@@ -1,6 +1,6 @@
-const userConfigs = require('../../settings/userConfigs')
-const sentences = require('../../settings/dictionary').sentences
-const phrases = require('../../settings/dictionary').phrases
+const userConfigs = require('../../personalize/userConfigs')
+const sentences = require('../../personalize/dictionary').sentences
+const phrases = require('../../personalize/dictionary').phrases
 
 function askText(bot, message, question) {
   const locale = userConfigs.getValue('locale', message.user)
