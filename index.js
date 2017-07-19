@@ -5,7 +5,7 @@ const clientId = process.env.SLACK_CLIENT
 const clientSecret = process.env.SLACK_CLIENT_SECRET
 const redirectUri = environment === 'development' ? 'http://localhost:3000/oauth' : 'http://cheatah.suw-arakawa.tokyo/oauth'
 const scopes = ['bot', 'commands', 'incoming-webhook']
-const app = require('./app/bot').init
+const app = require('./bot').init
 
 // Abort by failure of API keys
 if (!(port && clientId && clientSecret)) {
