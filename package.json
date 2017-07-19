@@ -7,7 +7,7 @@
     "start": "nodemon index.js",
     "dev": "nodemon --watch app --watch index.js",
     "migration": "sequelize db:migrate --config ./app/config/config.js --migrations-path ./app/migrations",
-    "test": "mocha test/**/*.test.js"
+    "test": "exit0"
   },
   "keywords": [
     "Everyone can cheet a sheet"
@@ -27,7 +27,6 @@
     "botkit": "^0.5.5",
     "em2": "^1.0.1",
     "express": "^4.15.3",
-    "mysql": "^2.13.0",
     "mysql2": "^1.3.6",
     "nodemon": "^1.11.0",
     "sequelize": "^4.3.2"
@@ -35,7 +34,6 @@
   "devDependencies": {
     "@types/sequelize": "^4.0.65",
     "ava": "^0.21.0",
-    "power-assert": "^1.4.4",
     "rimraf": "^2.6.1",
     "sequelize-cli": "^2.7.0",
     "sinon": "^2.3.8"
