@@ -4,9 +4,9 @@
   "description": "cheatah shows cheat sheets",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js",
-    "dev": "nodemon --watch app --watch index.js",
-    "migration": "sequelize db:migrate --config ./app/config/config.js --migrations-path ./app/migrations",
+    "start": "npm run dev",
+    "dev": "nodemon --watch bot --watch index.js",
+    "migration": "sequelize db:migrate --config ./db/config.js --migrations-path ./db/migrations",
     "test": "exit0"
   },
   "keywords": [
